@@ -188,8 +188,8 @@ def triggerPersonInPoolAlarm(withFrame, sendFrame):
 def personInPoolTest(poolPoints, personPoints):
     if len(poolPoints)>2:
         npTouchArray = np.array(poolPoints)
+        personPoints=list(personPoints)
         if len(personPoints)==2: #(only has the top left and bottom right corners)
-            personPoints=list(personPoints)
             personPoints.append((personPoints[0][0],personPoints[1][1])) #add top right
             personPoints.append((personPoints[1][0],personPoints[0][1])) # add bottom left
         for point in personPoints:
@@ -200,17 +200,20 @@ def personInPoolTest(poolPoints, personPoints):
     return False    
   
 def poolInPersonTest(poolPoints, personPoints):
-    if len(poolPoints)>2:
+    personPoints=list(personPoints)
+    if len(personPoints)>1:
+        #print("person points are:", personPoints)
         if len(personPoints)==2: #(only has the top left and bottom right corners)
-            personPoints=list(personPoints)
+            #personPoints=list(personPoints)
             personPoints.append((personPoints[0][0],personPoints[1][1])) #add top right
             personPoints.append((personPoints[1][0],personPoints[0][1])) # add bottom left
         npTouchArray = np.array(personPoints).astype(np.int32)
-#        print(npTouchArray)
+ #       print("personPoints are",personPoints)
         for point in poolPoints:
             if type(point)!=tuple:
                 point=tuple(point)
-            if cv2.pointPolygonTest(npTouchArray, point, False) != -1:
+                #print("pool edge is:",point)
+            if (cv2.pointPolygonTest(npTouchArray, point, False)!= -1):
                 return True
     return False    
   
@@ -237,11 +240,11 @@ cap = cv2.VideoCapture(0)
 #cap.set(3,640)
 #cap.set(4,480)
 FPS = 5
-width,height = 1080, 720
-#width, height = cap.get(3), cap.get(4)
-#print(width,height, "are the w and h of the capture")
-#print("Now setting it to {} fps: ".format(FPS) + str(cap.set(5, FPS)) )
-#print('frame rate is currently: ', cap.get(5))
+
+width, height = cap.get(3), cap.get(4)
+print(width,height, "are the w and h of the capture")
+print("Now setting it to {} fps: ".format(FPS) + str(cap.set(5, FPS)) )
+print('frame rate is currently: ', cap.get(5))
 
 #Andrew: change this variable if it's identifying too many humans
 MINIMUM_SCORE_THRESH=0.6
@@ -297,9 +300,9 @@ if cap.isOpened():
                           if scores[i]>MINIMUM_SCORE_THRESH:
                               locationBoxes.append(zip(onlyXes[i],onlyYes[i]))                      # Visualization of the results of a detection.
                       for box in locationBoxes:
-                          
+                          boxList = list(box)                         
 #                          cv2.rectangle(image_np, p1, p2, (255,255,255),3)
-                          if personInPoolTest(touchPoints, box) or poolInPersonTest(touchPoints, box):
+                          if poolInPersonTest(touchPoints, boxList) or personInPoolTest(touchPoints, boxList) :
                           #print("there is a person in the pool!")
                           #trigger alarm: (comment to not receive texts), change bool to send pic in message
                               triggerPersonInPoolAlarm(image_np, False)
