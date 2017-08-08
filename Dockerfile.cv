@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER Ian Philips <iansphilips@gmail.com>
 
-# Built using PyImageSearch guide: 
+#Opencv section Built using PyImageSearch guide: 
 # http://www.pyimagesearch.com/2015/06/22/install-opencv-3-0-and-python-2-7-on-ubuntu/
 
 # Install dependencies
@@ -83,13 +83,13 @@ RUN \
     rm -rf ~/opencv/modules  
  
 
-# Install TensorFlow
+# Install TensorFlow and Pillow
 RUN pip3 install \
 	tensorflow && \
 	pip install Pillow
 
 
-#Compile object detection models RUN
+#Compile object detection models
 RUN git clone https://github.com/tensorflow/models.git && \
 	cd models/ && \
 	protoc object_detection/protos/*.proto --python_out=. 

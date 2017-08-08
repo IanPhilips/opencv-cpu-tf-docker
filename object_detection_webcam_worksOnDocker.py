@@ -201,10 +201,7 @@ def personInPoolTest(poolPoints, personPoints):
 
 def poolInPersonTest(poolPoints, personPoints):
     personPoints=list(personPoints)
-
     #print("pool points are:", poolPoints)
-
-
     if len(personPoints)>1:
         #print("person points are:", personPoints)
         if len(personPoints)==2: #(only has the top left and bottom right corners)
@@ -212,7 +209,6 @@ def poolInPersonTest(poolPoints, personPoints):
             personPoints.append((personPoints[0][0],personPoints[1][1])) #add top right
             personPoints.append((personPoints[1][0],personPoints[0][1])) # add bottom left
         npTouchArray = np.array(personPoints).astype(np.int32)
-
      #   print("personPoints are",personPoints)
         for point in poolPoints:
             if type(point)!=tuple:
@@ -253,6 +249,7 @@ cap = cv2.VideoCapture(0)
 #cap.set(3,640)
 #cap.set(4,480)
 FPS = 5
+#width,height = 1080, 720
 width, height = cap.get(3), cap.get(4)
 print(width,height, "are the w and h of the capture")
 print("Now setting it to {} fps: ".format(FPS) + str(cap.set(5, FPS)) )
@@ -313,10 +310,9 @@ if cap.isOpened():
                           if scores[i]>MINIMUM_SCORE_THRESH:
                               locationBoxes.append(zip(onlyXes[i],onlyYes[i]))                      # Visualization of the results of a detection.
                       for box in locationBoxes:
-                         boxList = list(box)                         
+                          boxList = list(box)
 #                          cv2.rectangle(image_np, p1, p2, (255,255,255),3)
-                          if poolInPersonTest(touchPoints, boxList) or personInPoolTest(touchPoints, boxList) :
-
+                          if personInPoolTest(touchPoints, boxList) or poolInPersonTest(touchPoints, boxList):
                           #print("there is a person in the pool!")
                           #trigger alarm: (comment to not receive texts), change bool to send pic in message
                               triggerPersonInPoolAlarm(image_np, False)
