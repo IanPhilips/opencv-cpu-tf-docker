@@ -246,6 +246,8 @@ def poolInPersonTest(poolPoints, personPoints):
 
 # In[11]:
 cap = cv2.VideoCapture(0)
+writer = cv2.VideoWriter('webcamCapture.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (640,480))
+recording=False
 #cap.set(3,640)
 #cap.set(4,480)
 FPS = 5
@@ -329,6 +331,14 @@ if cap.isOpened():
                       #plt.figure(figsize=IMAGE_SIZE)
                       #plt.imshow(image_np)
                       drawPoolEdges(touchPoints, image_np)
+
+                      #recording video here
+                      k = cv2.waitKey(33)
+                      if recording:
+                        writer.write(image_np)
+                      if k == ord('r'):
+                        recording=True
+                        print("recording started!")
 
                       cv2.imshow("webcam",image_np) 
                       if cv2.waitKey(1) & 0xFF == ord('q'):

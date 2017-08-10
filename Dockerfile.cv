@@ -95,4 +95,6 @@ RUN git clone https://github.com/tensorflow/models.git && \
 	cd models/ && \
 	protoc object_detection/protos/*.proto --python_out=. 
 
+RUN echo ForwardX11 yes >> /etc/ssh/ssh_config &&
+    echo X11Forwarding yes >>/etc/ssh/ssh_config 
   
