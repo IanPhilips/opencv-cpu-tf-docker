@@ -28,6 +28,7 @@ RUN \
         libv4l-dev \
         libatlas-base-dev \
         gfortran \
+	vim \
         libhdf5-dev \
         python3-pip && \
 

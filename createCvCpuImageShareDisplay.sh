@@ -1,12 +1,13 @@
-sudo docker run -it \
+sudo docker run -it -d \
+    --net=host \
     --env="DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --device="/dev/video0:/dev/video0" \
-    --volume="/home/andrew/opencv-cpu-tf-proto-docker/sharedDockerFiles:/root/sharedDockerFiles" \
+    --volume="/home/iansp/dockerFiles/sharedDockerFiles:/root/sharedDockerFiles" \
     --volume="/etc/machine-id:/etc/machine-id" \
-    opencv-cpu-tf-proto:latest \
+    palebone/tf-opencv-docker-cpu:1.0 \
     bash 
-sudo export containerId=$(docker ps -l -q)
+export containerId=$(docker ps -l -q)
 sudo xhost +local:`sudo docker inspect --format='{{ .Config.Hostname }}' $containerId`
 sudo docker start $containerId
