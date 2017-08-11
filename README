@@ -1,6 +1,0 @@
-sudo docker ps -a #shows the last container that ran and exited
-# then copy and paste the container id to: 
-sudo docker start <container ID> && sudo docker attach <containerID> #starts the container again and attaches your terminal to its
-# at that point you'll be in the base directory of the container with tensorflow and opencv
-# then you just have to:
-cd root && sh runHumanWebcamDetection.sh #this puts you in the root directory and runs the human detection python script
